@@ -1,25 +1,20 @@
 # Playbook to create a droplet in Digital Ocean
+# ---------------------------------------------
 #
-# An ansible-vault encrypted file named 'secrets/do.yml' should be created
-# with ths variable:
-#       - do_api_token: The Digital Ocean api token to be used 
-#
-# In addition, in order twe be able to associate the domain with the droplet,
-# these two environment variables should be populated with the APIv1 values:
-#       DO_CLIENT_ID
-#       DO_API_KEY
+# These environment variables should be populated:
+#       DO_CLIENT_ID (api v1)
+#       DO_API_KEY (api v1)
+#       DO_API_TOKEN (api v2)
 #
 - hosts: localhost
   connection: local
-  vars_files:
-    - secrets/do.yml
   vars:
     username: alex
     domain: lekum.org
     ssh_key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
     droplet_name: riemann
     do_region_id: lon1
-    do_image_id: debian-8-x64
+    do_image_id: ubuntu-15-04-x64
     do_size_id: 512mb
 
   tasks:
@@ -34,7 +29,6 @@
         state: present
         command: droplet
         name: "{{ droplet_name }}"
-        api_token: "{{ do_api_token }}"
         region_id: "{{ do_region_id }}"
         size_id: "{{ do_size_id }}"
         image_id: "{{ do_image_id }}"
