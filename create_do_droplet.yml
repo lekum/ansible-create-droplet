@@ -11,7 +11,8 @@
   vars:
     username: alex
     domain: lekum.org
-    ssh_key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+    authorized_ssh_keys:
+      - "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
     droplet_name: riemann
     do_region_id: lon1
     do_image_id: ubuntu-15-04-x64
