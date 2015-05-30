@@ -1,0 +1,14 @@
+#cloud-config
+packages:
+  - sudo
+users:
+  - name: {{ username }}
+    ssh-authorized-keys:
+      - {{ ssh_key }} 
+    sudo: ['ALL=(ALL) NOPASSWD:ALL']
+    groups: sudo
+    shell: /bin/bash
+runcmd:
+  - sed -i -e '/^PermitRootLogin/s/^.*$/PermitRootLogin no/' /etc/ssh/sshd_config
+  - sed -i -e '$aAllowUsers {{ username }}' /etc/ssh/sshd_config
+  - restart ssh
