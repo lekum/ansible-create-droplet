@@ -5,14 +5,16 @@ packages:
 users:
   - name: {{ username }}
     ssh-authorized-keys:
-      {% for ssh_key in authorized_ssh_keys %}- {{ ssh_key }}{% endfor %}
+
+    {% for ssh_key in authorized_ssh_keys %}
+  - {{ ssh_key }}
+    {% endfor %}
 
     sudo: ['ALL=(ALL) NOPASSWD:ALL']
     groups: sudo
     shell: /bin/bash
 runcmd:
-  - sed -i 's/.*PasswordAuthentication.*/PasswordAuthentication no/' /etc/sshd_config
-  - sed -i 's/.*PermitRootLogin.*/PermitRootLogin no/' /etc/sshd_config
-  - sed -i -e '$aAllowUsers {{ username }}' /etc/ssh/sshd_config
-  - rm -rf /root/.ssh/
-  - restart ssh
+  - sed -i 's/^#PasswordAuthentication.*/PasswordAuthentication no/' /etc/ssh/sshd_config
+  - echo 'AllowUsers {{ username }}' >> /etc/ssh/sshd_config
+  - echo 'DenyUsers root' >> /etc/ssh/sshd_config
+  - service ssh restart
