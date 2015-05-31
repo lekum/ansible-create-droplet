@@ -12,8 +12,8 @@ users:
     groups: sudo
     shell: /bin/bash
 runcmd:
-  - sed -i -e '/PermitRootLogin/s/^.*$/PermitRootLogin no/' /etc/ssh/sshd_config
-  - sed -i -e '/PasswordAuthentication/s/^.*$/PasswordAuthentication no/' /etc/ssh/sshd_config
+  - sed -i 's/.*PasswordAuthentication.*/PasswordAuthentication no/' /etc/sshd_config
+  - sed -i 's/.*PermitRootLogin.*/PermitRootLogin no/' /etc/sshd_config
   - sed -i -e '$aAllowUsers {{ username }}' /etc/ssh/sshd_config
-  - rm -rf /root/.ssh
+  - rm -rf /root/.ssh/
   - restart ssh
