@@ -5,9 +5,8 @@ packages:
 users:
   - name: {{ username }}
     ssh-authorized-keys:
-    {% for ssh_key in authorized_ssh_keys %}
-      - {{ ssh_key }} 
-    {% endfor %}
+      {% for ssh_key in authorized_ssh_keys %}- {{ ssh_key }}{% endfor %}
+
     sudo: ['ALL=(ALL) NOPASSWD:ALL']
     groups: sudo
     shell: /bin/bash
